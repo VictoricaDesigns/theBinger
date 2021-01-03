@@ -1,0 +1,51 @@
+<?php
+
+//connect to database
+$conn = mysqli_connect('localhost', 'root', '', 'king_of_the_hill');
+
+//check connection
+if(!$conn){
+    echo 'Connection Error: ' . mysqli_connect_error();
+}
+
+//write query
+$sql = 'SELECT * FROM koth_episodes_s1 UNION SELECT * FROM koth_episodes_s4 ORDER BY RAND() LIMIT 6';
+
+//make query and get result
+$result = mysqli_query($conn, $sql);
+
+//fetch the resulting rows as an array
+$koth_eps = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+//free result for memory
+mysqli_free_result($result);
+
+//close connection
+mysqli_close($conn);
+
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Testing 1 2 3</title>
+
+    <div class="container">
+        <?php foreach ($koth_eps as $kotheps){ ?>
+            <div><?php echo htmlspecialchars($kotheps['epi_no']) ?></div>
+            <div><?php echo htmlspecialchars($kotheps['epi_name']) ?></div>
+            <div><?php echo htmlspecialchars($kotheps['epi_airdate']) ?></div>
+            <br>
+        <?php } ?>
+    </div>
+<a href="dropdown.php">dropdown.php</a>
+
+</head>
+
+<body>
+</body>
+
+</html>
